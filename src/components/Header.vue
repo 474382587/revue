@@ -1,12 +1,12 @@
 <template>
-  <div class="home">这是首页</div>
+  <div class="header">这是Header</div>
 </template>
 
 <script>
 // @ is an alias to /src
 
 export default {
-  name: "home",
+  name: "global-header",
   components: {}
 };
 </script>
