@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <Header/>
+    <Header :seller="seller"/>
     <div class="tab">
       <router-link class="tab-item" to="/products">Products</router-link>
       <router-link class="tab-item" to="/reviews">Reviews</router-link>
@@ -15,7 +15,25 @@ import Header from "components/header/Header.vue";
 export default {
   components: {
     Header
+  },
+  data() {
+      return {
+          seller: {}
+      }
+  },
+  created() {
+    this.$http.get('/data.json').then(res => {
+        if(res.status !== 200) {
+            console.log('bad request')
+        }
+        else {
+            console.log(res)
+            this.seller = Object.assign({}, res.data.seller)
+            console.log(this.seller)
+        }
+    })
   }
+  
 };
 </script>
 

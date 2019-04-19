@@ -4,6 +4,7 @@ module.exports = {
     configureWebpack: {
         resolve: {
             alias: {
+                'common': path.join(__dirname, '/src/common/'),
                 'root': path.join(__dirname, '/'),
                 '@': path.join(__dirname, '/src/'),
                 components: path.join(__dirname, '/src/components')
