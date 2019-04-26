@@ -2,7 +2,7 @@
   <div class="goods">
     <div class="menu-wrapper" ref="menuWrapper">
         <ul>
-            <li v-for="(item,index) in goods" :key="index" class="menu-item" :class="{'current': currentIndex===index}">
+            <li v-for="(item,index) in goods" :key="index" class="menu-item" :class="{'current': currentIndex===index}" @click="selectMenu(index)">
                 <span class="text">
                     <span v-show="item.type > 0" class="icon" :class="classMap[item.type]"></span>
                     {{item.name}}
@@ -62,7 +62,6 @@ export default {
     },
     created() {
         this.classMap = ["decrease", "discount", "special", "invoice", "guarantee"];
-        
     },
     mounted() {
         this.$http.get('../../data.json').then(res => {
@@ -90,6 +89,9 @@ export default {
         
     },
     methods: {
+        selectMenu(index){
+            this.foodsScroll.scrollTo(0,-this.listHeight[index],300)
+        },
         _initScroll() {
         this.meunScroll = new BScroll(this.$refs.menuWrapper, {
           click: true
@@ -149,6 +151,7 @@ export default {
                     font-weight 700
                     .text
                         border none
+                        font-weight 700
                 .text 
                     display table-cell
                     width 56px
