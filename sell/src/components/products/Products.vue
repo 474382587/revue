@@ -41,13 +41,18 @@
             </li>
         </ul>
     </div>
+    <ShopCart />
   </div>
 </template>
 
 <script>
 import axios from 'axios'
 import BScroll from 'better-scroll'
+import ShopCart from 'components/shopCart/ShopCart.vue'
 export default {
+    components: {
+        ShopCart
+    },
     data() {
         return {
             goods: [],
@@ -225,4 +230,13 @@ export default {
                             text-decoration line-through
                             font-size: 10px
                             color: rgb(147, 153, 159)
+
+
+
+
+
+
+
+
+         
 </style>
