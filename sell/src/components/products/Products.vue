@@ -35,13 +35,16 @@
                                 <span class="now">${{food.price}}</span>
                                 <span class="old" v-show="food.oldPrice">${{food.oldPrice}}</span>
                             </div>
+                            <div class="cartcontrol-wrapper">
+                                <CartControl :food="food" />
+                            </div>
                         </div>
                     </li>
                 </ul>
             </li>
         </ul>
     </div>
-    <ShopCart />
+    <ShopCart :select-foods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice" />
   </div>
 </template>
 
@@ -49,9 +52,12 @@
 import axios from 'axios'
 import BScroll from 'better-scroll'
 import ShopCart from 'components/shopCart/ShopCart.vue'
+import CartControl from 'components/cartControl/CartControl.vue'
+
 export default {
     components: {
-        ShopCart
+        ShopCart,
+        CartControl
     },
     data() {
         return {
@@ -62,6 +68,7 @@ export default {
     },
     props: {
         seller: {
+            default: {},
             type:Object
         }
     },
@@ -80,6 +87,17 @@ export default {
         })
     },
     computed: {
+        selectFoods() {
+            let foods = []
+            this.goods.forEach(good => {
+                good.foods.forEach(food => {
+                    if(food.count) {
+                        foods.push(food)
+                    }
+                })
+            })
+            return foods
+        },
         currentIndex() {
             for (let i = 0; i < this.listHeight.length; i++) {
                 let height1 = this.listHeight[i];
@@ -202,6 +220,7 @@ export default {
                     flex 0 0 57px
                     margin-right 10px
                 .content
+                    position relative
                     flex 1
                     .name
                         margin 2px 0 8px 0
@@ -230,11 +249,11 @@ export default {
                             text-decoration line-through
                             font-size: 10px
                             color: rgb(147, 153, 159)
-
-
-
-
-
+                    .cartcontrol-wrapper
+                        position absolute
+                        right 0 
+                        bottom 12px
+        
 
 
 

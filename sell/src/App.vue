@@ -6,7 +6,7 @@
       <router-link class="tab-item" to="/reviews">Reviews</router-link>
       <router-link class="tab-item" to="/seller">Seller</router-link>
     </div>
-    <router-view class="content"></router-view>
+    <router-view :seller="seller" class="content"></router-view>
   </div>
 </template>
 
