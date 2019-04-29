@@ -36,7 +36,7 @@
                                 <span class="old" v-show="food.oldPrice">${{food.oldPrice}}</span>
                             </div>
                             <div class="cartcontrol-wrapper">
-                                <CartControl :food="food" />
+                                <CartControl @add="addFood" :food="food" />
                             </div>
                         </div>
                     </li>
@@ -44,7 +44,7 @@
             </li>
         </ul>
     </div>
-    <ShopCart :select-foods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice" />
+    <ShopCart ref="shopcart" :select-foods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice" />
   </div>
 </template>
 
@@ -111,7 +111,19 @@ export default {
       },
         
     },
+    events: {
+        'cart.add'(target) {
+            this._drop(target)
+        }
+    },
     methods: {
+        addFood(target) {
+            this._drop(target);
+        },
+        _drop(target) {
+            console.log(this.$refs)
+            this.$refs.shopcart.drop(target)
+        },
         selectMenu(index){
             this.foodsScroll.scrollTo(0,-this.listHeight[index],300)
         },

@@ -22,13 +22,13 @@ export default {
     },
     methods: {
       addCart() {
-          console.log('click')
           if(!this.food.count) {
               this.$set(this.food, 'count', 1)
           }
           else {
               this.food.count += 1
           }
+          this.$emit('add', event.target)  
       },
       removeCart() {
           this.food.count -= 1
@@ -39,18 +39,13 @@ export default {
 
 <style lang="stylus" scoped>
     
-.move-enter-active {
+.move-enter-active
   transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
-}
-.move-leave-active {
+.move-leave-active 
   transition: all .3s ease-in-out;
-}
 .move-enter, .move-leave-to
-/* .slide-fade-leave-active for below version 2.1.8 */ {
   transform: translateX(30px) rotate(180deg);
-  
   opacity: 0;
-}
 .cartcontrol
     font-size 0
     .cart-remove,
