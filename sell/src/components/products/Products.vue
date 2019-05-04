@@ -1,4 +1,5 @@
 <template>
+  <div>
   <div class="goods">
     <div class="menu-wrapper" ref="menuWrapper">
         <ul>
@@ -15,7 +16,7 @@
             <li v-for="(item, index) in goods" :key="index" class="food-list" ref="foodList">
                 <h1 class="title"> {{item.name}} </h1>
                 <ul>
-                    <li v-for="(food, index) in item.foods" :key="index" class="food-item">
+                    <li v-for="(food, index) in item.foods" :key="index" class="food-item" @click="selectFood(food, $event)">
                         <div class="icon">
                             <img width="57px" height="57px" :src=food.icon alt="">
                         </div>
@@ -46,24 +47,29 @@
     </div>
     <ShopCart ref="shopcart" :select-foods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice" />
   </div>
+  <Food @add="addFood" :food="selectedFood" ref="food"/>
+  </div>
 </template>
 
 <script>
 import axios from 'axios'
 import BScroll from 'better-scroll'
 import ShopCart from 'components/shopCart/ShopCart.vue'
+import Food from 'components/food/Food.vue'
 import CartControl from 'components/cartControl/CartControl.vue'
 
 export default {
     components: {
         ShopCart,
-        CartControl
+        CartControl,
+        Food
     },
     data() {
         return {
             goods: [],
             listHeight: [],
-            scrollY: 0
+            scrollY: 0,
+            selectedFood: {}
         }
     },
     props: {
@@ -154,7 +160,10 @@ export default {
           this.listHeight.push(height);
         }
       },
-        
+      selectFood(food, event) {
+          this.selectedFood = food
+          this.$refs.food.show()
+      }
     }
 };
 </script>
