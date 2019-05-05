@@ -28,7 +28,7 @@
                     <CartControl @add="addFood" :food="food"  />
                 </div>
                 <transition name="fade">
-                    <div class="buy" @click="addFirst" v-show="!food.count || food.count === 0">
+                    <div class="buy" @click.stop="addFirst" v-show="!food.count || food.count === 0">
                         加入购物车
                     </div>
                 </transition>
