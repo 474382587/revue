@@ -47,7 +47,27 @@
                     <h1 class="title">
                         商品评价
                     </h1>
-                    <RatingSelect :select-type="selectType" :desc="desc" :only-content="onlyContent" :ratings="food.ratings" />
+                    <RatingSelect @contentToggle="contentToggle" @ratingTypeChange="ratingTypeChange" :select-type="selectType" :desc="desc" :only-content="onlyContent" :ratings="food.ratings" />
+                    <div class="rating-wrapper">
+                        <ul v-show="food.ratings && food.ratings.length">
+                            <li v-show="needShow(rating.rateType, rating.text)" v-for="(rating, index) in food.ratings" :key="index" class="rating-item">
+                                <div class="user">
+                                    <span class="name"> {{rating.username}} </span>
+                                    <img class="avatar" height="12" width="12" :src="rating.avatar" alt="">
+                                </div>
+                                <div class="time">
+                                    {{rating.rateTime | formatDate}}
+                                </div>
+                                <p class="text">
+                                    <span :class="{'icon-thumb_up': rating.rateType === 0, 'icon-thumb_down':rating.rateType === 1}"></span>
+                                    {{rating.text}}
+                                </p>
+                            </li>
+                        </ul>
+                        <div class="no-rating" v-show="!food.ratings ||!food.ratings.length">
+                                暂无评价
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -60,9 +80,12 @@ import BScroll from 'better-scroll'
 import CartControl from 'components/cartControl/CartControl.vue'
 import Split from 'components/split/Split.vue'
 import RatingSelect from 'components/ratingSelect/RatingSelect.vue'
+import {formatDate} from 'common/js/date.js'
+
 const POSITIVE = 0;
 const NEGATIVE = 1;
 const ALL = 2;
+
 export default {
     components: {
         CartControl,
@@ -74,7 +97,35 @@ export default {
             type:Object,
         }
     },
+    filters: {
+        formatDate(time) {
+            let date = new Date(time)
+            return formatDate(date, 'yyyy-MM-dd hh:mm')
+        }
+    },
     methods: {
+        needShow(type, text) {
+            if(this.onlyContent && !text) {
+                return false
+            }
+            if(this.selectType === ALL) {
+                return true
+            } else {
+                return type === this.selectType
+            }
+        },
+        contentToggle() {
+            this.onlyContent = !this.onlyContent
+            this.$nextTick(() => {
+                this.scroll.refresh()
+            })
+        },
+        ratingTypeChange(type){
+            this.selectType = type
+            this.$nextTick(() => {
+                this.scroll.refresh()
+            })
+        },
         addFood(target) {
             this.$emit('add', target)
         },
@@ -199,7 +250,47 @@ export default {
                 margin-left 18px
                 font-size 14px
                 color rgb(7,17,27)
-            
+            .rating-wrapper
+                padding 0 18px
+                .no-rating 
+                    font-size 12px
+                    color rgb(147,153,159)
+                    padding 16px 0 20px
+                .rating-item
+                    position relative
+                    padding 16px 0
+                    border-bottom 1px solid rgba(7,17,27,0.1);
+                    .user
+                        position absolute
+                        right 0
+                        top 16px
+                        font-size 0
+                        line-height 12px
+                        .name 
+                            display inline-block
+                            vertical-align top
+                            color rgb(147,153,159)
+                            margin-right 6px
+                            font-size 10px
+                        .avatar 
+                            border-radius 50%
+                    .time
+                        margin-bottom 6px
+                        font-size 10px
+                        line-height 12px
+                        color rgb(147,153,159)
+                    .text
+                        line-height 16px
+                        font-size 12px
+                        color rgb(7,17,27)
+                        .icon-thumb_down, .icon-thumb_up
+                            margin-right 4px
+                            line-height 16px
+                            font-size 12px
+                        .icon-thumb_up
+                            color rgb(0, 160, 220)
+                        .icon-thumb_down
+                            color rgb(147,153,159)
         .content 
             position relative
             padding 18px

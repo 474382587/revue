@@ -17,7 +17,7 @@
     <div @click="switchContent" class="switch" :class="{'on': onlyContent}">
         <i class="icon-check_circle"></i>
         <span class="text">
-            只看由内容的评价
+            只看有内容的评价
         </span>
     </div>
   </div>
@@ -63,12 +63,13 @@ export default {
   },
   methods: {
       select(type, event) {
-          this.selectType = type
-          this.$emit('ratingtype.select', type)
+          
+        //   this.selectType = type
+          this.$emit('ratingTypeChange', type)
       },
       switchContent() {
-          this.onlyContent = !this.onlyContent
-          this.$emit('content.toggle', this.onlyContent)
+        //   this.onlyContent = !this.onlyContent
+          this.$emit('contentToggle', this.onlyContent)
       }
   }
 };
