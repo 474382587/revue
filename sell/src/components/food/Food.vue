@@ -23,16 +23,34 @@
                     <div class="price">
                         <span class="now">${{food.price}}</span><span class="old" v-show="food.oldPrice">${{food.oldPrice}}</span>
                     </div>
-                </div>
-                <div class="cartcontrol-wrapper">
-                    <CartControl @add="addFood" :food="food"  />
-                </div>
-                <transition name="fade">
-                    <div class="buy" @click.stop="addFirst" v-show="!food.count || food.count === 0">
-                        加入购物车
+                    <transition name="fade">
+                        <div class="buy" @click.stop="addFirst" v-show="!food.count || food.count === 0">
+                            加入购物车
+                        </div>
+                    </transition>
+                     <div class="cartcontrol-wrapper">
+                        <CartControl @add="addFood" :food="food"  />
                     </div>
-                </transition>
+                </div>
+               
+                <Split v-show="food.info" />
+                <div class="info" v-show="food.info">
+                    <h1 class="title">
+                        商品信息
+                    </h1>
+                    <p class="text">
+                        {{food.info}}
+                    </p>
+                </div>
+                <Split />
+                <div class="rating">
+                    <h1 class="title">
+                        商品评价
+                    </h1>
+                    <RatingSelect :select-type="selectType" :desc="desc" :only-content="onlyContent" :ratings="food.ratings" />
+                </div>
             </div>
+            
         </div>
     </transition>
 </template>
@@ -40,9 +58,16 @@
 <script>
 import BScroll from 'better-scroll'
 import CartControl from 'components/cartControl/CartControl.vue'
+import Split from 'components/split/Split.vue'
+import RatingSelect from 'components/ratingSelect/RatingSelect.vue'
+const POSITIVE = 0;
+const NEGATIVE = 1;
+const ALL = 2;
 export default {
     components: {
-        CartControl
+        CartControl,
+        Split,
+        RatingSelect
     },
     props: {
         food: {
@@ -55,6 +80,10 @@ export default {
         },
         show() {
             this.showFlag = true;
+            
+            this.selectType = ALL
+            this.onlyContent = true
+            
             this.$nextTick(() => {
                 if(!this.scroll) {
                     this.scroll = new BScroll(this.$refs.food, {
@@ -76,7 +105,14 @@ export default {
     },
     data() {
         return {
-            showFlag: false
+            showFlag: false,
+            selectType: ALL,
+            onlyContent: true,
+            desc: {
+                all: '全部',
+                positive: '推荐',
+                negative: '吐槽'
+            }
         }
     }
 }
@@ -104,7 +140,6 @@ export default {
     width 100%
     background-color #fff
     .food-content
-        position relative
         .image-header
             position relative
             width 100%
@@ -119,10 +154,10 @@ export default {
             .back
                 position absolute
                 top 10px
-                left 0
+                left 10px
                 .icon-arrow_lift 
                     display block
-                    padding 18px
+                    padding 10px
                     font-size 20px
                     color #e3e3e3
                     background-color #000
@@ -143,7 +178,30 @@ export default {
             border-radius 12px
             color #ffffff
             background-color rgb(0, 160, 220)
+        
+        
+        
+        .info 
+            padding 18px
+            .title
+                line-height 14px
+                margin-bottom 6px
+                font-size 14px
+                color rgb(7,17,27)
+            .text
+                padding 0 8px
+                font-size 12px
+                color rgb(77,85,93)
+        .rating
+            padding-top 18px
+            .title
+                line-height 14px
+                margin-left 18px
+                font-size 14px
+                color rgb(7,17,27)
+            
         .content 
+            position relative
             padding 18px
             .title
                 margin-bottom 8px
