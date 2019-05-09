@@ -26,4 +26,3 @@ export function loadFromLocal(id, key, def) {
   return ret || def;
 }
 
-// all set
