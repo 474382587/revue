@@ -25,3 +25,5 @@ export function loadFromLocal(id, key, def) {
   let ret = seller[key];
   return ret || def;
 }
+
+// all set
