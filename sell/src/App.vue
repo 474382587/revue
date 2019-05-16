@@ -33,7 +33,8 @@ export default {
   },
   
   created() {
-    this.$http.get('/data.json?id='+this.seller.id).then(res => {
+      let prodUrl = 'http://demo.josephj.in/revue/sell/dist'
+    this.$http.get(prodUrl + '/data.json?id='+this.seller.id).then(res => {
         if(res.status !== 200) {
             console.log('bad request')
         }

@@ -82,7 +82,9 @@ export default {
         this.classMap = ["decrease", "discount", "special", "invoice", "guarantee"];
     },
     mounted() {
-        this.$http.get('../../data.json').then(res => {
+      let prodUrl = 'http://demo.josephj.in/revue/sell/dist'
+        
+        this.$http.get(prodUrl + '/data.json').then(res => {
             if(res.status === 200) {
                 this.goods = res.data.goods
                 this.$nextTick(() => {
